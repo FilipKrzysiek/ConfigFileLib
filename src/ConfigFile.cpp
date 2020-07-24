@@ -174,6 +174,17 @@ bool ConfigFile::isString(string txt) {
         return true;
 }
 
+bool ConfigFile::getBoolValue(string key) {
+    string val = getStringValue(move(key));
+    transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return std::tolower(c); });
+    if(val == "true" || val == "1")
+        return true;
+    else if(val == "false" || val == "0")
+        return false;
+    else
+        throw Exception("Error value assigned to key " + key + " is not bool");
+}
+
 int ConfigFile::getIntValue(string key) {
     transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::tolower(c); });
     return this->getValue<int>(key);
@@ -205,17 +216,32 @@ type ConfigFile::getValue(string key) {
     }
 }
 
+template<>
+bool ConfigFile::getValue(string key) {
+    return getBoolValue(move(key));
+}
+
 /*
 template <>
 string ConfigFile::getValue<string>(string key){
     return this->cdata[key];
 }
 */
-/*string ConfigFile::getValue(string key) {
-    return this->cdata[key];
-}*/
+string ConfigFile::getValue(string key) {
+    return getStringValue(move(key));
+}
 
-template bool ConfigFile::getValue<bool>(string key);
+template short ConfigFile::getValue<short>(string key);
+template unsigned short ConfigFile::getValue<unsigned short >(string key);
 template int ConfigFile::getValue<int>(string key);
+template unsigned ConfigFile::getValue<unsigned>(string key);
+template long ConfigFile::getValue<long>(string key);
+template unsigned long ConfigFile::getValue<unsigned long>(string key);
+template long long ConfigFile::getValue<long long>(string key);
+template unsigned long long ConfigFile::getValue<unsigned long long>(string key);
+template float ConfigFile::getValue<float>(string key);
 template double ConfigFile::getValue<double>(string key);
+template long double ConfigFile::getValue<long double>(string key);
+template char ConfigFile::getValue<char>(string key);
+template unsigned char ConfigFile::getValue<unsigned char >(string key);
 template string ConfigFile::getValue<string>(string key);

@@ -1,3 +1,5 @@
+#ifndef CONFIGFILE_H
+#define CONFIGFILE_H
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -11,9 +13,20 @@ using namespace std;
 class ConfigFile {
 public:
     static const unsigned short CFILE_BOOL = 0,
-            CFILE_INT = 1,
-            CFILE_DOUBLE = 2,
-            CFILE_STRING = 3;
+            CFILE_SHORT = 1,
+            CFILE_U_SHORT = 2,
+            CFILE_INT = 3,
+            CFILE_U_INT = 4,
+            CFILE_LONG = 5,
+            CFILE_U_LONG = 6,
+            CFILE_LONG_LONG = 7,
+            CGILE_U_LONG_LONG = 8,
+            CFILE_FLOAT = 9,
+            CFILE_DOUBLE = 10,
+            CFILE_LONG_DOUBLE = 11,
+            CFILE_CHAR = 12,
+            CFILE_U_CHAR = 13,
+            CFILE_STRING = 14;
 
     struct ConfigInputLine {
         string name;
@@ -33,28 +46,35 @@ public:
     virtual ~ConfigFile();
 
     /**
-     * @brief Get from readed config int value
+     * @brief Get from reader config bool value
+     * @param key
+     * @return value assigned to key
+     */
+    bool getBoolValue(string key);
+
+    /**
+     * @brief Get from reader config int value
      * @param key
      * @return value assigned to key
      */
     int getIntValue(string key);
 
     /**
-     * @brief Get from readed config int value
+     * @brief Get from reader config int value
      * @param key
      * @return value assigned to key
      */
     double getDoubleValue(string key);
 
     /**
-     * @brief Get from readed config int value
+     * @brief Get from reader config int value
      * @param key
      * @return value assigned to key
      */
     string getStringValue(string key);
 
     /**
-     * @brief Get from readed config int value
+     * @brief Get from reader config int value
      * @param key
      * @return value assigned to key
      */
@@ -62,11 +82,40 @@ public:
     type getValue(string key);
 
     /**
-     * @brief Get from readed config int value
+     * @brief Get from reader config int value
      * @param key
      * @return value assigned to key
      */
     string getValue(string key);
+
+
+
+    //string getValue(string key);
+
+protected:
+
+private:
+    //Name, value
+    //This keep all config values
+    map<string, string> cdata;
+    //Name, type, default value, is required
+    struct backboneItem {
+        unsigned short type;
+        string defaultVal;
+        bool required;
+        bool exist = false;
+    };
+    map<string, backboneItem> backbone;
+    ifstream cfile;
+
+    bool checkType(string val, unsigned short type);
+
+    template<typename type>
+    bool isNumber(string txt);
+
+    bool isString(string txt);
+
+    string whiteCharsEraser(string txt);
 };
 
 class ConfigFilePrepare {
@@ -89,3 +138,5 @@ private:
     vector<ConfigFile::ConfigInputLine> inputLines;
     ConfigFile::ConfigInputLine temp;
 };
+
+#endif // CONFIGFILE_H
