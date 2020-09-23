@@ -1,7 +1,6 @@
 #ifndef CONFIGFILE_H
 #define CONFIGFILE_H
 
-#include <iostream>
 #include <fstream>
 #include <map>
 #include <vector>
@@ -47,6 +46,15 @@ public:
     ConfigFile(string fileName, vector<ConfigFile::ConfigInputLine> cinput);
 
     virtual ~ConfigFile();
+
+    /**
+     * @brief Load next/extra definitions list. The new list shouldnt not contain definitions that are passed in other lists or constructor.
+     * @param definitionsList list with variable definitions
+     * @throws Exception
+     * @throw Duplicated definitions name
+     * @throw Can't find required key
+     */
+    void loadMoreDefinitions(vector<ConfigFile::ConfigInputLine> definitionsList);
 
     /**
      * @brief Get from reader config bool value
@@ -119,6 +127,8 @@ private:
     bool isString(string txt);
 
     string whiteCharsEraser(string txt);
+
+    void fileProcessing();
 };
 
 #endif // CONFIGFILE_H
