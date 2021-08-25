@@ -2,7 +2,7 @@
 // Created by cysiu on 22.09.2019.
 //
 
-#include "../include/ConfigFilePrepare.h"
+#include "ConfigFilePrepare.h"
 
 void ConfigFilePrepare::addConfigInputLine(string name, unsigned short type, string defaultVal, bool required){
     transform(name.begin(), name.end(),  name.begin(), [](unsigned char c){ return std::tolower(c); });

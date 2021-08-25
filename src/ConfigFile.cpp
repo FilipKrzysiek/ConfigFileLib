@@ -1,4 +1,4 @@
-#include "../include/ConfigFile.h"
+#include "ConfigFile.h"
 
 ConfigFile::ConfigFile(string fileName, vector<ConfigFile::ConfigInputLine> cinput) {
 
