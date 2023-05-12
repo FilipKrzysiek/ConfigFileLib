@@ -115,6 +115,7 @@ private:
         string defaultVal;
         bool required;
         bool exist = false;
+        bool defined = false;
     };
     map<string, backboneItem> backbone;
     ifstream cfile;

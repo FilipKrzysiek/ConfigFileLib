@@ -4,7 +4,7 @@ ConfigFile::ConfigFile(string fileName, vector<ConfigFile::ConfigInputLine> cinp
 
     for (auto const &item : cinput) {
         if(this->cdata.count(item.name) == 0)
-            this->backbone[item.name] = backboneItem{item.type, item.defaultVal, item.required, false};
+            this->backbone[item.name] = backboneItem{item.type, item.defaultVal, item.required, false, true};
         else
             throw Exception("Item with name" + item.name + "exist in definitions list!");
     }
@@ -202,7 +202,7 @@ type ConfigFile::getValue(string key) {
 
 void ConfigFile::loadMoreDefinitions(vector<ConfigFile::ConfigInputLine> definitionsList) {
     for (auto const &item : definitionsList) {
-        if(this->backbone.count(item.name) == 0)
+        if(this->backbone.count(item.name) == 0 || this->backbone.count(item.name) && !this->backbone[item.name].defined)
             this->backbone[item.name] = backboneItem{item.type, item.defaultVal, item.required, false};
         else
             throw Exception("Item with name " + item.name + " exist in definitions list!");
