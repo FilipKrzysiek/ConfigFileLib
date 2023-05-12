@@ -7,7 +7,7 @@
 
 #include "ConfigFile.h"
 #include <string>
-#include "../../../Exception/Exception.h"
+#include "Exception.h"
 
 using namespace std;
 

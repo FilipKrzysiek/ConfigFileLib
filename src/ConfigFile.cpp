@@ -173,18 +173,15 @@ bool ConfigFile::getBoolValue(string key) {
 }
 
 int ConfigFile::getIntValue(string key) {
-    transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::tolower(c); });
     return this->getValue<int>(key);
 }
 
 double ConfigFile::getDoubleValue(string key) {
-    transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::tolower(c); });
     return this->getValue<double>(key);
 }
 
 string ConfigFile::getStringValue(string key) {
-    transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::tolower(c); });
-    return this->cdata[key];
+    return getValue<string>(key);
 }
 
 template<typename type>
@@ -205,10 +202,10 @@ type ConfigFile::getValue(string key) {
 
 void ConfigFile::loadMoreDefinitions(vector<ConfigFile::ConfigInputLine> definitionsList) {
     for (auto const &item : definitionsList) {
-        if(this->cdata.count(item.name) == 0)
+        if(this->backbone.count(item.name) == 0)
             this->backbone[item.name] = backboneItem{item.type, item.defaultVal, item.required, false};
         else
-            throw Exception("Item with name" + item.name + "exist in definitions list!");
+            throw Exception("Item with name " + item.name + " exist in definitions list!");
     }
 
     for (auto const &mitem: this->backbone) {
@@ -230,12 +227,6 @@ bool ConfigFile::getValue(string key) {
     return getBoolValue(move(key));
 }
 
-/*
-template <>
-string ConfigFile::getValue<string>(string key){
-    return this->cdata[key];
-}
-*/
 string ConfigFile::getValue(string key) {
     return getStringValue(move(key));
 }
